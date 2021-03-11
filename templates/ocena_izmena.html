@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+{% block content %}
+<!-- Kreiranje navigacionog menia -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <a class="navbar-brand" href="#">Evidencija studenata</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+                <a class="nav-link" href={{ url_for('studenti') }}>Studenti</a>
+            </li>
+        {% if (rola == 'administrator') %}
+            <li class="nav-item">
+                <a class="nav-link" href={{ url_for('predmeti') }}>Predmeti</a>
+            </li>  
+            <li class="nav-item ">
+                <a class="nav-link" href={{ url_for('korisnici') }}>Korisnici</a>
+            </li>
+        {% endif %}    
+    	</ul>
+        <!--Link za logout-->
+        
+         <button class="btn btn-primary" data-toggle="modal" data-target="#logoutModal" >
+             <i class="fas fa-sign-out-alt"></i>
+         </button>
+         </a>
+        
+        <!--Modal za logout-->
+        <div class="modal fade" id="logoutModal" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        Da li ste sigurni da želite da se izlogujete?
+                    </div>
+                    <div class="modal-footer">
+                        <!--Otkaži-->
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Otkaži</button>
+                        <!--Logout-->
+                        <a href={{ url_for('logout') }} role="button" class="btn btn-danger">Logout
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--Kraj Modala-->
+     </div>
+</nav>
+<!-- Zavrseno kreiranje navigacionog menia -->
+
+<!--Prikaz sadrzaja za izmenu ocene-->
+<div class='col-lg-5'>
+        <form method = 'POST' action = {{ url_for('ocena_izmena', id = predmet_ocena.sid, oid = predmet_ocena.oid) }}>
+        	<h4><label>Izmena ocene</label></h4>
+            <label >Predmet : </label> 
+            <label><b>{{predmet_ocena.naziv}}</b></label>
+            <br>
+            <label>Nova ocena :</label><br>
+            <input class = 'form-control' style='width:60%' type = 'number' name = 'ocena' min='6' max='10' value = {{predmet_ocena.ocena}}><br>
+            <label>Datum</label><br>
+            <input class = 'form-control' style='width:60%;' type = 'date' name = 'datum' value = {{predmet_ocena.datum}} required><br><br>
+            <div>
+                <button type = 'submit' name = 'sacuvaj' class = 'btn btn-primary'>Sačuvaj</button>
+            </div>
+        </form>
+</div>
+
+
+{% endblock %}

@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block content %}
+<!--Sadrzaj stranice login-->
+<div class="">
+  <form aciton = {{ url_for('login') }} method ='POST' style="
+    padding: 100px;
+    text-align: left;
+    margin: auto;
+    display: table;">
+            <img src = './static/media/LogoAVTSS.png', align = 'center'><br>
+              <label for="inputEmail" >Email adresa</label><br>
+              <input type="email"  name = 'email' size = 50 class = 'form-control' style="width: 80%">
+        
+              <label for="inputPass">Password</label><br>
+              <input type="password" size = 50 class = 'form-control' name = 'lozinka' style="width: 80%"><br>
+                <button type="submit" class="btn btn-primary">Prijavi se<section></section></button>
+          </form>
+</div>
+{% endblock %}

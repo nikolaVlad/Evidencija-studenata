@@ -1,0 +1,91 @@
+{% extends 'base.html' %}
+{% block content %}
+<!-- Kreiranje navigacionog menia -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <a class="navbar-brand" href="#">Evidencija studenata</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+                <a class="nav-link" href={{ url_for('studenti') }}>Studenti</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href={{ url_for('predmeti') }}>Predmeti</a>
+            </li>  
+            <li class="nav-item ">
+                <a class="nav-link" href={{ url_for('korisnici') }}>Korisnici</a>
+            </li>    
+    	</ul>
+        <!--Link za logout-->
+        
+         <button class="btn btn-primary" data-toggle="modal" data-target="#logoutModal" >
+             <i class="fas fa-sign-out-alt"></i>
+         </button>
+         </a>
+        
+        <!--Modal za logout-->
+        <div class="modal fade" id="logoutModal" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        Da li ste sigurni da želite da se izlogujete?
+                    </div>
+                    <div class="modal-footer">
+                        <!--Otkaži-->
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Otkaži</button>
+                        <!--Logout-->
+                        <a href={{ url_for('logout') }} role="button" class="btn btn-danger">Logout
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--Kraj Modala-->
+     </div>
+</nav>
+<!-- Zavrseno kreiranje navigacionog menia -->
+
+<div class = 'container'>
+   <h4><label>Novi student</label></h4>
+    <form action = {{ url_for('student_novi') }} method='POST' enctype="multipart/form-data">
+        <div class="form-group">
+            <!--Dodavanje slike-->
+            <label for="slika">
+            <img id="slika_pregled" src="/static/placeholder01.png" width="120" height="120" />
+            </label>
+            <label for="slika" class="btn btn-primary">Odaberi sliku</label>
+            <input type="file" accept="image/*" class="custom-file-input" hidden id="slika" name="slika">
+        </div>
+
+        <label>Broj indeksa</label><br>
+        <input style = "width:35%"  type = 'text' name = 'broj_indeksa' class='form-control' required><br>
+        <label>Ime</label><br>
+        <input type = 'text' name = 'ime' class='form-control' required style="width:35%"><br>
+        <label>Ime roditelja</label><br>
+        <input type = 'text' name = 'ime_roditelja' class='form-control' required style="width:35%"><br>
+        <label>Prezime</label><br>
+        <input type = 'text' name = 'prezime' class='form-control' required style="width:35%"><br>
+        <label>Email</label><br>
+        <input type = 'email' name = 'email' class='form-control' required style="width:35%"><br>
+        <label>Broj telefona</label><br>
+        <input type = 'number' name = 'broj_telefona' class='form-control' required style="width:35%"><br>
+        <label>Godina studija</label><br>
+        <input type = 'number' name = 'godina_studija' class='form-control' required style="width:35%"><br>
+        <label>Datum rodjenja</label><br>
+        <input type = 'date' name ='datum_rodjenja' class='form-control'required style="width:35%"><br>
+        <label>JMBG</label><br>
+        <input type = 'number' name = 'jmbg' class='form-control' required style="width:35%"><br>
+
+        <button type ='submit' class = 'btn btn-primary' style="width:35%">Sačuvaj</button>
+
+        
+    </form>
+</div>
+
+
+
+{% endblock %}

@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+{% block content %}
+<!-- Kreiranje navigacionog menia -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <a class="navbar-brand" href="#">Evidencija studenata</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+                <a class="nav-link" href={{ url_for('studenti') }}>Studenti</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href={{ url_for('predmeti') }}>Predmeti</a>
+            </li>  
+            <li class="nav-item active">
+                <a class="nav-link" href={{ url_for('korisnici') }}>Korisnici</a>
+            </li>    
+    	</ul>
+        <!--Link za logout-->
+        
+         <button class="btn btn-primary" data-toggle="modal" data-target="#logoutModal" >
+             <i class="fas fa-sign-out-alt"></i>
+         </button>
+         </a>
+        
+        <!--Modal za logout-->
+        <div class="modal fade" id="logoutModal" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        Da li ste sigurni da želite da se izlogujete?
+                    </div>
+                    <div class="modal-footer">
+                        <!--Otkaži-->
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Otkaži</button>
+                        <!--Logout-->
+                        <a href={{ url_for('logout') }} role="button" class="btn btn-danger">Logout
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--Kraj Modala-->
+     </div>
+</nav>
+<!-- Zavrseno kreiranje navigacionog menia -->
+
+
+<div class = 'container'>
+    <h4><label>Novi korisnik</label></h4><br><br>
+    <form action = {{ url_for('korisnik_novi') }} method = 'POST'>
+        <label>Ime</label><br>
+        <input type = 'text' class ='form-control', name = 'ime' required style="width:35%"><br>
+        <label>Prezime</label><br>
+        <input type = 'text' class ='form-control', name = 'prezime' required style="width:35%"><br>
+        <label>Email</label><br>
+        <input type ='email'class ='form-control', name = 'email' required style="width:35%"><br>
+        <label>Lozinka</label><br>
+        <input type = 'password' class ='form-control', name = 'lozinka' required style="width:35%"><br><br>
+        <div class="form-group" style="width:35%">
+            <label for="rola">Rola</label>
+            <select id="rola" name="rola" class="form-control">
+                <option style='background-color: #DFDFDF' value="administrator">Administrator</option>
+                <option style='background-color: #DFDFDF' value="profesor">Profesor</option>
+                <option style='background-color: #DFDFDF' value="student">Student</option>
+            </select>
+        </div>
+
+        <button name = 'sacuvaj' class = 'btn btn-primary' type = 'Submit' >Sačuvaj</button> 
+    </form>
+</div>
+
+{% endblock %}

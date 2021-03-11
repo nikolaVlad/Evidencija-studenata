@@ -1,0 +1,511 @@
+{% extends 'base.html' %}
+{% block content %}
+<!-- Kreiranje navigacionog menia -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <a class="navbar-brand" href="#">Evidencija studenata</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+     {% if (rola != 'student') %}
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+                <a class="nav-link" href={{ url_for('studenti') }}>Studenti</a>
+            </li>
+    {%endif%}
+        {% if (rola == 'administrator') %}
+            <li class="nav-item">
+                <a class="nav-link" href={{ url_for('predmeti') }}>Predmeti</a>
+            </li>  
+            <li class="nav-item ">
+                <a class="nav-link" href={{ url_for('korisnici') }}>Korisnici</a>
+            </li>
+        {% endif %}    
+    	</ul>
+        <!--Link za logout-->
+        
+         <button class="btn btn-primary" data-toggle="modal" data-target="#logoutModal" >
+             <i class="fas fa-sign-out-alt"></i>
+         </button>
+         </a>
+        
+        <!--Modal za logout-->
+        <div class="modal fade" id="logoutModal" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        Da li ste sigurni da želite da se izlogujete?
+                    </div>
+                    <div class="modal-footer">
+                        <!--Otkaži-->
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Otkaži</button>
+                        <!--Logout-->
+                        <a href={{ url_for('logout') }} role="button" class="btn btn-danger">Logout
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--Kraj Modala-->
+     </div>
+</nav>
+<!-- Zavrseno kreiranje navigacionog menia -->
+
+<!--Sadrzaj stranice-->
+<div class='container'><br>
+    <div class='row'>
+           <!--Kartica za podatke studenta-->
+        <div class='col-lg-6'>
+            <table class="table table-striped table-responsive-sm
+                <tbody>
+                    <tr>
+                        <td colspan="2" align="center">
+                            <img 
+                            {%if student.slika%}
+                            src="/static/uploads/{{ student.slika }}"
+                            {%else%}
+                            src="/static/placeholder01.png"
+                            {%endif%} 
+                            id="slika_pregled" />
+                        </td>
+                    </tr>
+                   <tr>
+                        <th scope="row">Ime</th>
+                        <td >{{student.ime}}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Ime roditelja</th>
+                        <td>{{student.ime_roditelja}}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Prezime</th>
+                        <td>{{student.prezime}}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Broj indeksa</th>
+                        <td>{{student.broj_indeksa}}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Godina studija</th>
+                        <td>{{student.godina_studija}}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Broj telefona</th>
+                        <td>{{student.broj_telefona}}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Email</th>
+                        <td>{{student.email}}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Datum rodjenja</th>
+                        <td>{{student.datum_rodjenja}}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">JMBG</th>
+                        <td>{{student.jmbg}}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Ukupno ESPB</th>
+                        <td>{{student.espb}}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Prosek ocena</th>
+                        <td>{{student.prosek_ocena}}</td>
+                    </tr>
+                    <!--Akcije koje profesor ne može videti-->
+                    {% if (rola != 'profesor') %}
+                    <tr>
+                        <th scope = 'row'>Akcije</th>
+                        <td class="row">
+        
+                          <!--Link do stranice za izmenu studenta-->
+                             <a href={{ url_for("student_izmena", id = student.id) }} role="button">
+                                 <i class="fas fa-edit" style="color : orange"></i>
+                             </a>
+                    {%endif%}
+                             <!--Forma za brisanje koju može videti samo administrator-->
+                                {%if rola == 'administrator'%}
+
+                                 <button style="border: none; background: none" data-toggle="modal" data-target="#deleteModal{{student.id}}">
+                                     <i class="fas fa-trash" style = "color : red;"></i>
+                                 </button>
+                             
+                        </td>
+                    </tr>
+                     <!--Modal za brisanje studenta-->
+                                <div class="modal fade" id="deleteModal{{student.id}}" tabindex="-1" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered">
+                                        <div class="modal-content">
+                                            <div class="modal-body"> <!-- Poruka Modala-->
+                                                 Sigurno želite da obrišete studenta {{ student.ime }} {{ student.prezime }}?
+                                            </div>
+                                            <div class="modal-footer">
+                                                <!-- Button za odustanja, gde se nista nece poslati backednu-->
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Odustani</button>
+                                                <!-- Link za brisanje odredjenog studenta, gde ce backendu biti poslat podatak o studentu (student.id)-->
+                                                <a href={{ url_for('student_brisanje', id=student.id) }} role="button" class="btn btn-danger">Obriši</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                    <!--Kraj modala za brisanje-->                    
+                    {%endif%}
+                </tbody>
+            </table>
+        </div>
+
+        <!--Kartica za unos ocene koju student ne može videti-->
+      
+        <div class='col-lg-6' {%if rola == 'student'%}style="display: none;"{%endif%}>
+            <br><br><br><br><br><br>
+            <form method = 'POST' action = {{ url_for('ocena_nova',id = student.id) }}>
+                <label>Predmet</label><br>
+               
+                <select name = 'predmet' class = 'form-control' required style='width: 60%'>
+                    {% for predmet in predmeti %}
+                        <option class="form-control" style='background-color: #DFDFDF' value = {{predmet.id}}>{{predmet.naziv}}</option>
+                    {% endfor %}
+                </select>
+                <br>
+                
+
+
+                <label>Ocena</label><br>
+                <input class = 'form-control' required style='width:60%' type = 'number' name = 'ocena' min='6' max='10' ><br>
+                <label>Datum</label><br>
+                <input class = 'form-control' required style='width:60%;' type = 'date' name = 'datum'><br><br>
+                <div align="center">
+                    <button type = 'submit' name = 'sacuvaj' class = 'btn btn-primary'>Dodaj ocenu</button>
+                </div>
+               </form>
+        </div>
+    </div>
+</div>
+
+<br>
+<br>
+
+
+<!-- Tabela o predmetima, koje se odnose na odredjenog studenta--> 
+<div class="col">
+
+    
+<table class=" table table-responsive-sm table-striped">
+    <form action= {{ url_for('student', id = student.id) }} method='GET'>
+       <!--Filtriranje i pretraga-->
+       <thead class=""> 
+           <tr>
+               <!--Sifra-->
+               <th scope="col">
+                   <div class="input-group input-group-sm">
+                       <input value="{{args['sifra']}}" name="sifra" placeholder="Sifra" type="text" class="form-control">
+                   </div>
+               </th>
+               <!--Naziv-->
+               <th scope="col">
+                   <div class="input-group input-group-sm">
+                       <input value="{{args['naziv']}}" name="naziv" placeholder="Naziv" type="text" class="form-control">
+                   </div>
+               </th>
+               <!--Godina studija-->
+               <th scope="col">
+                   <div class="input-group  input-group-sm row">
+                       <select name="godina_studija" class="form-control">
+                           <option value="">Sve</option>
+                           <option {%if args.godina_studija == '1'%}selected{% endif %} value="1">1</option>
+                           <option {%if args.godina_studija == '2'%}selected{% endif %} value="2">2</option>
+                           <option {%if args.godina_studija == '3'%}selected{% endif %} value="3">3</option>
+                       </select>
+                   </div>
+               </th>
+               <!--ESPB-->
+               <th scope="col">
+                <div class="input-group input-group-sm">
+                    
+                     <input type='number' name= 'espb_od'class="form-control" 
+                      placeholder="Od" value="{{args.espb_od}}"/>
+                        &nbsp
+                      <input type='number' name= 'espb_do'class="form-control" 
+                     style= 'width: 20px;' placeholder="Do" value="{{args.espb_do}}"/>                               
+
+                </div>
+            </th>     
+               <!--Status predmeta-->
+               <th scope="col">
+                   <div class="input-group input-group-sm">
+                       <select name="obavezni_izborni" class="form-control">
+                           <option value="">Oba</option>
+                           <option {%if args.obavezni_izborni == 'obavezni'%} selected {% endif %} value="obavezni">Obavezni</option>
+                           <option {%if args.obavezni_izborni == 'izborni'%}selected{% endif %} value="izborni">Izborni</option>
+                       </select>
+                   </div>
+               </th>
+                <!--Ocena-->
+                <th scope="col">
+                   <div class="input-group input-group-sm">
+                       <input value="{{args['ocena']}}" name="ocena" placeholder="Ocena" type="text" class="form-control">
+                   </div>
+               </th>      
+           
+               <th scope="col">
+               <!--Dugme za potvrdu-->
+                   <div class="btn-group ">
+                       <button type="submit" class="btn btn-primary btn-sm mr-3">
+                           Pretraži
+                       </button>
+                       <a role="button" class="btn btn-secondary btn-sm" href="{{ url_for('student', id= student.id) }}" >
+                           Poništi
+                       </a>
+                    </div>
+               </th>
+           </tr>
+       </thead>
+
+       <!--Sortiranje-->
+       <thead class="">
+           <tr>
+               <!--Sifra-->
+               <th scope ="col">
+                   <label for ='order_by_predmeti.sifra' class='headre-btn'>
+                           Šifra
+                   </label>
+                       <!--Ikonice-->
+                           {% if order_type == 'asc' and args.order_by == 'predmeti.sifra' %}
+                           <i class="fas fa-sort-up"></i>
+                           {% elif order_type == 'desc' and args.order_by == 'predmeti.sifra' %}
+                           <i class="fas fa-sort-down"></i>
+                           {% else %}
+                           <i class="fas fa-sort light-icon"></i>
+                           {% endif %}
+                       <!--Kraj_Ikonice-->
+                   <input style="display: none;" id="order_by_predmeti.sifra" 
+                   value="predmeti.sifra" class="header-btn" 
+                   type="submit" name="order_by"/>
+               </th>
+
+               <!--Naziv-->
+               <th scope ="col">
+                   <label for ='order_by_predmeti.naziv' class='headre-btn'>
+                       Naziv
+                   </label>
+                       <!--Ikonice-->
+                           {% if order_type == 'asc' and args.order_by == 'predmeti.naziv' %}
+                           <i class="fas fa-sort-up"></i>
+                           {% elif order_type == 'desc' and args.order_by == 'predmeti.naziv' %}
+                           <i class="fas fa-sort-down"></i>
+                           {% else %}
+                           <i class="fas fa-sort light-icon"></i>
+                           {% endif %}
+                       <!--Kraj_Ikonice-->
+                   <input style="display: none;" id="order_by_predmeti.naziv" 
+                   value="predmeti.naziv" class="header-btn" 
+                   type="submit" name="order_by"/>
+               </th>
+
+                <!--Godina studija-->
+                <th scope ="col">
+                   <label for ='order_by_predmeti.godina_studija' class='headre-btn'>
+                       Godina studija
+                   </label>
+                       <!--Ikonice-->
+                           {% if order_type == 'asc' and args.order_by == 'predmeti.godina_studija' %}
+                           <i class="fas fa-sort-up"></i>
+                           {% elif order_type == 'desc' and args.order_by == 'predmeti.godina_studija' %}
+                           <i class="fas fa-sort-down"></i>
+                           {% else %}
+                           <i class="fas fa-sort light-icon"></i>
+                           {% endif %}
+                       <!--Kraj_Ikonice-->
+                   <input style="display: none;" id="order_by_predmeti.godina_studija" 
+                   value="predmeti.godina_studija" class="header-btn" 
+                   type="submit" name="order_by"/>
+               </th>
+
+                <!--ESPB-->
+                <th scope ="col">
+                   <label for ='order_by_predmeti.espb' class='headre-btn'>
+                       ESPB
+                   </label>
+                       <!--Ikonice-->
+                           {% if order_type == 'asc' and args.order_by == 'predmeti.espb' %}
+                           <i class="fas fa-sort-up"></i>
+                           {% elif order_type == 'desc' and args.order_by == 'predmeti.espb' %}
+                           <i class="fas fa-sort-down"></i>
+                           {% else %}
+                           <i class="fas fa-sort light-icon"></i>
+                           {% endif %}
+                       <!--Kraj_Ikonice-->
+                   <input style="display: none;" id="order_by_predmeti.espb" 
+                   value="predmeti.espb" class="header-btn" 
+                   type="submit" name="order_by"/>
+               </th>
+              
+                <!--Status predmeta-->
+                <th scope ="col">
+                   <label for ='order_by_predmeti.obavezni_izborni' class='headre-btn'>
+                       Obavezni/Izborni
+                   </label>
+                       <!--Ikonice-->
+                           {% if order_type == 'asc' and args.order_by == 'obavezni_izborni' %}
+                           <i class="fas fa-sort-up"></i>
+                           {% elif order_type == 'desc' and args.order_by == 'obavezni_izborni' %}
+                           <i class="fas fa-sort-down"></i>
+                           {% else %}
+                           <i class="fas fa-sort light-icon"></i>
+                           {% endif %}
+                       <!--Kraj_Ikonice-->
+                   <input style="display: none;" id="order_by_predmeti.obavezni_izborni" 
+                   value="obavezni_izborni" class="header-btn" 
+                   type="submit" name="order_by"/>
+               </th>
+
+               <!--Ocena-->
+               <th scope ="col">
+                   <label for ='order_by_ocene.ocena' class='headre-btn'>
+                       Ocena
+                   </label>
+                       <!--Ikonice-->
+                           {% if order_type == 'asc' and args.order_by == 'ocene.ocena' %}
+                           <i class="fas fa-sort-up"></i>
+                           {% elif order_type == 'desc' and args.order_by == 'ocene.ocena' %}
+                           <i class="fas fa-sort-down"></i>
+                           {% else %}
+                           <i class="fas fa-sort light-icon"></i>
+                           {% endif %}
+                       <!--Kraj_Ikonice-->
+                   <input style="display: none;" id="order_by_ocene.ocena" 
+                   value="ocene.ocena" class="header-btn" 
+                   type="submit" name="order_by"/>
+               </th>
+
+                
+               <th scope="col">
+                   <label for ='akcije' class='headre-btn' {%if rola == 'student'%}style="display: none;{%endif%}">
+                       Akcije
+                   </label>
+               </th>
+               
+           </tr>
+           <input name="prethodni_order_by" value="{{ args.order_by }}" hidden />
+           <input name="order_type" value="{{ order_type }}" hidden />
+           <input name="page" value="{{ strana }}" hidden />               
+        
+       </thead>
+    </form> 
+       <!--Iscitavanje podataka iz baze-->
+       <tbody>
+        {% for predmet_ocena in predmeti_ocene %}
+           <tr>
+               <td>{{ predmet_ocena.sifra }}</td>
+               <td>{{ predmet_ocena.naziv }}</td>
+               <td>{{ predmet_ocena.godina_studija }}</td>
+               <td>{{ predmet_ocena.espb }}</td>
+               <td>{{ predmet_ocena.obavezni_izborni}}</td>
+               <td><b style=" color : blue">{{predmet_ocena.ocena}}</b></td>
+
+               <!--Akcije koje student ne može videti-->
+               
+               <td>
+                    <div {%if rola == 'student'%}style="display: none;"{%endif%}>
+                     <!--Link do stranice za izmenu ocene(predmet_ocena.oid), studenta(student.id)-->
+                    <a href= {{ url_for('ocena_izmena', id = student.id, oid = predmet_ocena.oid) }} role="button" >
+                        <i class="fas fa-edit" style='color:orange'></i>
+                    </a>
+                
+                
+                    <!--Dugme za brisajnje ocene (predmet_ocena.oid), datog studenta(student.id)-->
+                
+                    <button style= 'border: none; background: none' data-toggle="modal" data-target="#deleteModal{{predmet_ocena.oid}}">
+                                <i class="fas fa-trash" style="color : red"></i>
+                    </button>
+                    </div>
+                         
+                </td>
+            </tr>
+
+            <!--Modal za brisanje ocene studenta-->
+                       <div class="modal fade" id="deleteModal{{predmet_ocena.oid}}" tabindex="-1" aria-hidden="true">
+                           <div class="modal-dialog modal-dialog-centered">
+                               <div class="modal-content">
+                                   <div class="modal-body"> <!-- Poruka Modala-->
+                                        Sigurno želite da obrišete ocenu iz predmeta {{ predmet_ocena.naziv }} ?
+                                   </div>
+                                   <div class="modal-footer">
+                                       <!-- Button za odustanja, gde se nista nece poslati backednu-->
+                                       <button type="button" class="btn btn-secondary" data-dismiss="modal">Odustani</button>
+                                       <!-- Link za brisanje odredjenog studenta, gde ce backendu biti poslat podatak o studentu (student.id)-->
+                                       <a href={{ url_for('ocena_brisanje', id=student.id, oid = predmet_ocena.oid) }} role="button" class="btn btn-danger">Obriši</a>
+                                   </div>
+                               </div>
+                           </div>
+                       </div>           
+           <!--Kraj modala za brisanje-->               
+       {% endfor %}
+    </tbody>
+</table>
+</div>
+
+<!--Polje za export fajlova koji nije vidljiv samo profesoru-->
+{%if rola != 'profesor'%}
+<!--Export fajlova-->
+<div class="container" align = 'center'> 
+    <div class="">
+        <a href={{ url_for('export', tip = 'ocene', studentId = student.id) }} role="button" class="btn btn-success mr-3 ">
+            Export
+        </a>
+    </div>
+</div>
+{%endif%}
+
+<br>
+
+
+<!-- PAGINACIJA -->
+
+<nav>
+    <ul class="pagination justify-content-center mt-3">
+        <form action="{{url_for('student' , id = student.id)}}" method="GET" >
+            <button class="page-link" name = 'page' value="{{ prethodna_strana }}" {%if strana == '1' %} disabled {%endif%} >Prethodna</button>
+              <!-- Sortiranje :-->
+              <input name = 'order_by' value = '{{args.order_by}}' id = 'orderBy' hidden />
+              <input name = 'order_type' value = '{{args.order_type}}' id = 'orderType' hidden />
+              <input name="prethodni_order_by" value="{{ args.prethodni_order_by }}" hidden />
+  
+              <!--Filtriranje-->
+              <input name = 'sifra'            value = '{{args.sifra}}' hidden />
+              <input name = 'naziv'            value = '{{args.naziv}}' hidden />
+              <input name = 'godina_studija'   value = '{{args.godina_studija}}' hidden />
+              <input name = 'espb_od'          value = '{{args.espb_od}}' hidden />
+              <input name = 'espb_do'          value = '{{args.espb_do}}' hidden />
+              <input name = 'obavezni_izborni' value = '{{args.obavezni_izborni}}' hidden />
+              <input name = 'ocena'            value = '{{args.ocena}}' hidden/>
+        </form>
+
+        <li class="page-item active"><a class="page-link" href="#">{{ strana }}</a></li>
+
+        <form action="{{url_for('student', id = student.id)}}" method="GET" >
+            <button class="page-link" name = 'page' value="{{ sledeca_strana }}" >Sledeca</button>
+           
+            <!-- Sortiranje :-->
+            <input name = 'order_by' value = '{{args.order_by}}' id = 'orderBy' hidden />
+            <input name = 'order_type' value = '{{args.order_type}}' id = 'orderType' hidden />
+            <input name="prethodni_order_by" value="{{ args.prethodni_order_by }}" hidden />
+
+            <!--Filtriranje-->
+            <input name = 'sifra'            value = '{{args.sifra}}' hidden />
+            <input name = 'naziv'            value = '{{args.naziv}}' hidden />
+            <input name = 'godina_studija'   value = '{{args.godina_studija}}' hidden />
+            <input name = 'espb_od'          value = '{{args.espb_od}}' hidden />
+            <input name = 'espb_do'          value = '{{args.espb_do}}' hidden />
+            <input name = 'obavezni_izborni' value = '{{args.obavezni_izborni}}' hidden />
+            <input name = 'ocena'            value = '{{args.ocena}}' hidden/>
+
+        </form>
+    </ul>
+</nav>
+
+
+{% endblock %}

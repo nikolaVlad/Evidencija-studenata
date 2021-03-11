@@ -1,0 +1,15 @@
+Napomene u vezi Praktikuma :
+
+- Isped svakog dodatog komentara stoje znaci " !!! ", radi lakšeg pretraživanja pomoću
+shearch bar-a.
+
+- Vodio sam se isključivo po programu koji je opisan u praktikumu, u slučaju kad je 
+dolazilo do odstupanja, detaljno sam opisao način na koji sam određenu funkcionalnost implementirao.
+
+- Većina komentara sadrži : razlog zašto određeni deo koda nije funkcionalan, 
+grešku koju sam dobio kao i referenca odakle sam našao pomoć (ako iste postoje) 
+i programsku logiku koju sam ja upotrebio, da bih rešio problem. 
+
+- app.py fajl kao i svi ostali fajlovi (šabloni) su komentarisani radi lakšeg snalaženja i kasnijeg update-ovanja.
+
+- Projekat je odrađen do poglavlja "Dodatno".
