@@ -14,7 +14,8 @@ Projekat završen : 25.11.2020
 Instalacija projekta :
 	1. Pre samog pokretanja potrebno je skinuti i instalirani sledeće programe : Git, Python, Xamp.
 	2. Kada instaliranje potrebnih programa bude završeno, potrebno je otići na github link repozitorijuma gde se nalazi aplikacija  : https://github.com/nikolaVlad/Evidencija_studenata.
-	3. Potom je potrebno kopirati link github repozitorijuma, pozicionirati se na željenoj lokaciji i pomoću git alata naredbom 							git clone klonorati repozitorijum aplikacije na svom lokalnom računaru. 
+	3. Potom je potrebno kopirati link github repozitorijuma, pozicionirati se na željenoj lokaciji i pomoću git alata naredbom 
+	git clone klonorati repozitorijum aplikacije na svom lokalnom računaru. 
 	4. U sledećem koraku je potrebno importovani bazu koja se nalazi na lokaciji : https://github.com/nikolaVlad/Evidencija_studenata/Data_Base/evidencija_studenata.sql na MySql Server ( Preporučeni alat : PhpMyAdmin ).
 	5.
 	
