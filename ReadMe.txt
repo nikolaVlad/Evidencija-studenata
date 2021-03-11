@@ -8,7 +8,7 @@ Opis projekta :
 	- Ima ubacene role za Admin, Korisnik i Student.
 	
 	
-Projekat završen : 25.11.2020
+
 
 
 Instalacija projekta :
@@ -18,8 +18,14 @@ Instalacija projekta :
 	3. Potom je potrebno kopirati link github repozitorijuma, pozicionirati se na željenoj lokaciji i pomoću git alata naredbom 
 	git clone klonorati repozitorijum aplikacije na svom lokalnom računaru. 
 	4. U sledećem koraku je potrebno importovani bazu koja se nalazi na lokaciji : 
-	https://github.com/nikolaVlad/Evidencija_studenata/Data_Base/evidencija_studenata.sql na MySql Server ( Preporučeni alat : PhpMyAdmin ).
-	5.
+	Evidencija_studenata/Data_Base/evidencija_studenata.sql na MySql Server ( Preporučeni alat : PhpMyAdmin ).
+	5. Zatim je potrebno pomoću cmd-a pozicionirati se u root aplikacije (/Evidencija_studenata), gde se i nalazi ulazna tačka u aplikaciji, odnosno fajl app.py i komandom :
+	python app.py pokrenuti aplikaciju.
+	6. Aplikacija sluša na portu : 5000 ( 127.0.0.1:5000).
 	
+
+
+
+Projekat završen : 25.11.2020
 
 Nikola Vladimirov
